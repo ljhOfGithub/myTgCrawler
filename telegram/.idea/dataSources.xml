@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="+13821290771" uuid="49210db3-b8a9-4974-8f29-3b1bebde8967">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:D:\chrome_download\NEW-telegram\telegram\tel\tg_final\+13821290771.session</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="12345678911" uuid="6157de5a-7f35-4b1e-86e4-323a0c7cca18">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:D:\chrome_download\NEW-telegram\telegram\tel\tg_final\12345678911.session</jdbc-url>
+    </data-source>
+  </component>
+</project>
