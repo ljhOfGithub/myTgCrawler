@@ -59,3 +59,4 @@ for c in client_list:
         # t = tqdm.tqdm(total=limit, desc='下载进度')
         c.loop.run_until_complete(tg_msg(c))
         # t.close()
+#搜索到的很多group的信息都是无用信息，不如直接用信息搜索功能搜索地址信息再手动筛选
