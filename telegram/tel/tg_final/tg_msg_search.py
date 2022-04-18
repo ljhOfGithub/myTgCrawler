@@ -32,6 +32,7 @@ limit = 100000  # 检索的消息数量
 from telethon import TelegramClient
 import traceback
 import logging
+import pandas as pd
 api_id =9063315
 api_hash = '39ee1e156d8f3a1f99a3c4096ef09452'
 # client_list = []
@@ -58,19 +59,39 @@ async def msg(client,username):
                 user = await client.get_entity(M.from_id)
                 writer.writerow([M.date, str(M.message), user.first_name, user.last_name])
                 # print(M)
-
         except:
             # traceback.print_exc()
             logging.debug(str(traceback.format_exc()))
-if __name__ == '__main__':
-    client = TelegramClient('search.session', api_id, api_hash)
-    client.start()
+def detect():
+    with open('addr.txt','r') as f:
+        addrlist = literal_eval(f.read())
     with open('username.txt', 'r') as f:
         usernameList = literal_eval(f.read())
-    for username in usernameList:
-        myindex = usernameList.index(username)
-        print(myindex)
-        client.loop.run_until_complete(msg(client,username))
+    with open('detect.csv','w',newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(['group','date','message','user_first','user_last'])
+        for username in usernameList:
+            filename = '/home/mytg/mycsv/' + username + '.csv'
+            df = pd.read_csv(filename)
+            for index,row in df.iterrows():
+                tag = any([addr in row['message'].lower() for addr in addrlist])#有任何一个地址则输出
+                if tag:
+                    print(1)
+                    writer.writerow([username,row['date'],row['message'],row['user_first'],row['user_last']])
+if __name__ == '__main__':
+    # client = TelegramClient('search.session', api_id, api_hash)
+    # client.start()
+    # with open('username.txt', 'r') as f:
+    #     usernameList = literal_eval(f.read())
+    # indexSkip = 41
+    # for username in usernameList:
+    #     myindex = usernameList.index(username)
+    #     if myindex == indexSkip:
+    #         # continue
+    #         print(myindex)
+    #         print(username)
+    #         client.loop.run_until_complete(msg(client,username))
+    detect()
     # getUsername()
 #     for c in client_list:
 #         with c:
