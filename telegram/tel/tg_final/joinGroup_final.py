@@ -58,6 +58,7 @@ async def join_group_by_id(client):
 for c in client_config.client_list:
     with c:
         c.loop.run_until_complete(join_group_by_id(c))
-#addrgroup:ethereum搜索
-#addrgroup2:blockchain搜索
-#addrgroup3:cryptocurrency搜索
+#addgroup:ethereum搜索
+#addgroup2:blockchain搜索
+#addgroup3:cryptocurrency搜索
+#addgroup4:nft搜索
