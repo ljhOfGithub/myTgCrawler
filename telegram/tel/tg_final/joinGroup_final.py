@@ -1,10 +1,5 @@
 #!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @Time  : 2019/9/14 16:48
-# @Author: weifulong
-# @File  : add_group.py
 
-#
 from telethon.tl.types import PeerChannel
 
 import client_config
@@ -15,7 +10,7 @@ import time
 from telethon.tl.functions.channels import JoinChannelRequest
 from telethon.tl.functions.messages import ImportChatInviteRequest
 from ast import literal_eval
-file = r'addgroup.txt'
+file = r'addgroup1.txt'
 
 ff_list = []
 
