@@ -32,11 +32,11 @@ async def join_group_by_id(client):
         try:
             # channel_id = ch_id
             # channel = 'STunionn'
-            if ch.startswith('t.me/joinchat'):
+            if ch.startswith('https://telegramchannels.me/bots'):
                 # print('wrong format')
                 continue
-            elif ch.startswith('t.me/'):
-                channel = ch[5:]
+            elif ch.startswith('https://telegramchannels.me/groups'):
+                channel = ch[34:]
                 # channel = await client.get_entity(PeerChannel(int('{channel_id}'.format(channel_id=channel_id))))
                 await client(JoinChannelRequest(channel))
                 # channel_hash = ch
@@ -44,6 +44,12 @@ async def join_group_by_id(client):
                 print('加群成功',channel)
                 # print('加群成功',channel_hash)
                 count_success += 1
+            elif ch.startswith('https://telegramchannels.me/channels'):
+                channel = ch[36:]
+                await client(JoinChannelRequest(channel))
+                print('加群成功',channel)
+                count_success += 1
+
         except Exception as e:
             print('加群失败',e.args)
             pass
@@ -52,3 +58,6 @@ async def join_group_by_id(client):
 for c in client_config.client_list:
     with c:
         c.loop.run_until_complete(join_group_by_id(c))
+#addrgroup:ethereum搜索
+#addrgroup2:blockchain搜索
+#addrgroup3:cryptocurrency搜索
