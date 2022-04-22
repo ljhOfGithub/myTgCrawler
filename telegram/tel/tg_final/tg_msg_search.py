@@ -3,7 +3,7 @@ from ast import literal_eval
 import pandas as pd
 import re
 filenum = 4
-myversion = '2'
+myversion = '3'
 def getUsername():
     usernameList = []
     for i in range(1,5):
@@ -50,6 +50,8 @@ import logging
 import pandas as pd
 api_id =9063315
 api_hash = '39ee1e156d8f3a1f99a3c4096ef09452'
+api_id =10754897
+api_hash = 'e42a8b8fa4fc81078852b8ed3a14feb1'
 # client_list = []
 # client_list.append(client)
 logname = 'search' + myversion + '.log'
@@ -60,7 +62,8 @@ logging.basicConfig(level=logging.ERROR,#控制台打印的日志级别
                     )
 import csv
 async def msg(client,username):
-    search = 'address'
+    # search = 'address'
+    search = '0x'
     messages = client.iter_messages(username, min_id=min_id, reverse=True, limit=limit, search=search)
     filename = '/home/mytg/mycsv' + myversion + '/' + username + '.csv'
     with open(filename,'w',newline='') as f:
@@ -87,26 +90,48 @@ def detect():
             filename = '/home/mytg/mycsv' + myversion + '/' + username + '.csv'
             df = pd.read_csv(filename)
             for index,row in df.iterrows():
-                tag = any([addr in row['message'].lower() for addr in addrlist])#有任何一个地址则输出
+                tag = any([addr in str(row['message']).lower() for addr in addrlist])#有任何一个地址则输出
                 if tag:
                     print(1)
                     writer.writerow([username,row['date'],row['message'],row['user_first'],row['user_last']])
+import asyncio
+async def verifyScam(client,username):
+    # usernameFile = 'username' + myversion + '.txt'
+    # detectFile = 'detect' + myversion + '.csv'
+    # entity = await client.get_entity(username)
+    # print(type(entity))
+    # for att in dir(entity):
+    #     print(att, getattr(entity, att))
+    # username = 'digitalgoldcoin'
+    try:
+        entity = await client.get_entity(username)  # 如果不使用await，get_entity会返回<class 'coroutine'>
+        scam = entity.scam
+        if scam == True:
+            print(username)
+    except:
+        print('error')
+        print(username)
+    await asyncio.sleep(1)
 if __name__ == '__main__':
     client = TelegramClient('search.session', api_id, api_hash)
     client.start()
     usernameFile = 'username' + myversion + '.txt'
     with open(usernameFile, 'r') as f:
         usernameList = literal_eval(f.read())
-    usernameList = usernameList[6:]
     indexSkip = -1
+    count = 0
+    usernameList = usernameList[count:]
     for username in usernameList:
-        myindex = usernameList.index(username)
-        if myindex == indexSkip:
+        # myindex = usernameList.index(username)
+        if count == indexSkip:
             continue
-        print(myindex)
-        print(username)
-        client.loop.run_until_complete(msg(client,username))
-    # detect()
+        print(count)
+        count += 1
+        # print(myindex)
+        # print(username)
+        # client.loop.run_until_complete(msg(client,username))
+        client.loop.run_until_complete(verifyScam(client,username))
+# detect()
     # getUsername()
     # getUsername2()
 #     for c in client_list:
