@@ -92,19 +92,21 @@ def detect():
                     print(1)
                     writer.writerow([username,row['date'],row['message'],row['user_first'],row['user_last']])
 if __name__ == '__main__':
-    # client = TelegramClient('search.session', api_id, api_hash)
-    # client.start()
-    # with open('username.txt', 'r') as f:
-    #     usernameList = literal_eval(f.read())
-    # indexSkip = 41
-    # for username in usernameList:
-    #     myindex = usernameList.index(username)
-    #     if myindex == indexSkip:
-    #         # continue
-    #         print(myindex)
-    #         print(username)
-    #         client.loop.run_until_complete(msg(client,username))
-    detect()
+    client = TelegramClient('search.session', api_id, api_hash)
+    client.start()
+    usernameFile = 'username' + myversion + '.txt'
+    with open(usernameFile, 'r') as f:
+        usernameList = literal_eval(f.read())
+    usernameList = usernameList[6:]
+    indexSkip = -1
+    for username in usernameList:
+        myindex = usernameList.index(username)
+        if myindex == indexSkip:
+            continue
+        print(myindex)
+        print(username)
+        client.loop.run_until_complete(msg(client,username))
+    # detect()
     # getUsername()
     # getUsername2()
 #     for c in client_list:
