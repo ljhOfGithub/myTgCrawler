@@ -3,6 +3,7 @@ from ast import literal_eval
 import pandas as pd
 import re
 filenum = 4
+myversion = '2'
 def getUsername():
     usernameList = []
     for i in range(1,5):
@@ -39,10 +40,6 @@ def getUsername2():
     with open('username2.txt','w') as f:
         print(usernameList,file=f)
         # print(len(usernameList))
-
-
-
-
 # username = "BitShibaToken"
 # username = 'octafx_trade_bitcoin_signal'#不需要加群也能搜索信息
 min_id = 0  # 开启的消息id
@@ -55,20 +52,17 @@ api_id =9063315
 api_hash = '39ee1e156d8f3a1f99a3c4096ef09452'
 # client_list = []
 # client_list.append(client)
-logging.basicConfig(level=logging.DEBUG,#控制台打印的日志级别
-                    filename='search.log',
+logname = 'search' + myversion + '.log'
+logging.basicConfig(level=logging.ERROR,#控制台打印的日志级别
+                    filename=logname,
                     filemode='w',##模式，有w和a，w就是写模式，每次都会重新写日志，覆盖之前的日志
                     #a是追加模式，默认如果不写的话，就是追加模式
-                    format=
-                    '%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s'
-                    #日志格式
                     )
 import csv
 async def msg(client,username):
     search = 'address'
     messages = client.iter_messages(username, min_id=min_id, reverse=True, limit=limit, search=search)
-    # print(messages)
-    filename = '/home/mytg/mycsv/' + username + '.csv'
+    filename = '/home/mytg/mycsv' + myversion + '/' + username + '.csv'
     with open(filename,'w',newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['date','message','user_first','user_last'])
@@ -76,20 +70,21 @@ async def msg(client,username):
             async for M in messages:
                 user = await client.get_entity(M.from_id)
                 writer.writerow([M.date, str(M.message), user.first_name, user.last_name])
-                # print(M)
         except:
             # traceback.print_exc()
-            logging.debug(str(traceback.format_exc()))
+            logging.error(str(traceback.format_exc()))
 def detect():
     with open('addr.txt','r') as f:
         addrlist = literal_eval(f.read())
-    with open('username2.txt', 'r') as f:
+    usernameFile = 'username' + myversion + '.txt'
+    detectFile = 'detect' + myversion + '.csv'
+    with open(usernameFile, 'r') as f:
         usernameList = literal_eval(f.read())
-    with open('detect.csv','w',newline='') as f:
+    with open(detectFile,'w',newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['group','date','message','user_first','user_last'])
         for username in usernameList:
-            filename = '/home/mytg/mycsv/' + username + '.csv'
+            filename = '/home/mytg/mycsv' + myversion + '/' + username + '.csv'
             df = pd.read_csv(filename)
             for index,row in df.iterrows():
                 tag = any([addr in row['message'].lower() for addr in addrlist])#有任何一个地址则输出
