@@ -1,5 +1,7 @@
 import traceback
 from ast import literal_eval
+import pandas as pd
+import re
 filenum = 4
 def getUsername():
     usernameList = []
@@ -25,6 +27,22 @@ def getUsername():
             print(i)
     with open('username.txt','w') as f:
         print(usernameList,file=f)
+def getUsername2():
+    df = pd.read_csv('tglinkAll.csv')
+    usernameList = []
+    for index,row in df.iterrows():
+        tgRe = r"(https?:\/\/)?(www[.])?(telegram|t)\.me\/([a-zA-Z0-9_-]*)\/?"
+        mylist = re.findall(tgRe,row['link'])
+        username = mylist[0][3]
+        usernameList.append(username)
+        print(username)
+    with open('username2.txt','w') as f:
+        print(usernameList,file=f)
+        # print(len(usernameList))
+
+
+
+
 # username = "BitShibaToken"
 # username = 'octafx_trade_bitcoin_signal'#不需要加群也能搜索信息
 min_id = 0  # 开启的消息id
@@ -65,7 +83,7 @@ async def msg(client,username):
 def detect():
     with open('addr.txt','r') as f:
         addrlist = literal_eval(f.read())
-    with open('username.txt', 'r') as f:
+    with open('username2.txt', 'r') as f:
         usernameList = literal_eval(f.read())
     with open('detect.csv','w',newline='') as f:
         writer = csv.writer(f)
@@ -93,6 +111,7 @@ if __name__ == '__main__':
     #         client.loop.run_until_complete(msg(client,username))
     detect()
     # getUsername()
+    # getUsername2()
 #     for c in client_list:
 #         with c:
 #             # c.loop.run_until_complete(msg(c))
